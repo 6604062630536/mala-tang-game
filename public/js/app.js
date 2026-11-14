@@ -2452,6 +2452,7 @@ document.getElementById("bSave").addEventListener("click", async () => {
       bH = 431; // ขยายจาก 500x385 เป็น 1.12 เท่า
     const bX = 540 - bW / 2,
       bY = 395;
+    const soupBounds = { left: 0.083, top: 0.17, width: 0.84, height: 0.668 };
 
     // 7.1 ตัวชามเปล่า
     const bowlImg = await loadImg(document.getElementById("bowlImg").src);
@@ -2470,10 +2471,10 @@ document.getElementById("bSave").addEventListener("click", async () => {
       ctx.save();
       ctx.beginPath();
       ctx.ellipse(
-        bX + bW * (0.083 + 0.42),
-        bY + bH * (0.136 + 0.334),
-        bW * 0.42,
-        bH * 0.334,
+        bX + bW * (soupBounds.left + soupBounds.width / 2),
+        bY + bH * (soupBounds.top + soupBounds.height / 2),
+        bW * (soupBounds.width / 2),
+        bH * (soupBounds.height / 2),
         0,
         0,
         Math.PI * 2,
@@ -2492,10 +2493,10 @@ document.getElementById("bSave").addEventListener("click", async () => {
             ctx.globalAlpha = parseFloat(getComputedStyle(tx).opacity) || 1;
             ctx.drawImage(
               sImg,
-              bX + bW * 0.08,
-              bY + bH * 0.13,
-              bW * 0.84,
-              bH * 0.68,
+              bX + bW * soupBounds.left,
+              bY + bH * soupBounds.top,
+              bW * soupBounds.width,
+              bH * soupBounds.height,
             );
             ctx.restore();
           }
@@ -2585,10 +2586,10 @@ document.getElementById("bSave").addEventListener("click", async () => {
       ctx.save();
       ctx.beginPath();
       ctx.ellipse(
-        bX + bW * 0.503,
-        bY + bH * 0.47,
-        bW * 0.42,
-        bH * 0.334,
+        bX + bW * (soupBounds.left + soupBounds.width / 2),
+        bY + bH * (soupBounds.top + soupBounds.height / 2),
+        bW * (soupBounds.width / 2),
+        bH * (soupBounds.height / 2),
         0,
         0,
         Math.PI * 2,

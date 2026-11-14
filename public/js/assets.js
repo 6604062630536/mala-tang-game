@@ -1,8 +1,27 @@
+function buildBgTile(W = 2283, H = 1600) {
+  const BG = "#4A0E0E",
+    LN = "#580E0D",
+    Y0 = 125.5,
+    P = 55.375,
+    HP = 181.5;
+  const r0 = Math.ceil((-90 - Y0) / P),
+    r1 = Math.floor((H + 90 - Y0) / P);
+  let u = "";
+  for (let r = r0; r <= r1; r++) {
+    const cy = Y0 + r * P,
+      base = ((r % 2) + 2) % 2 === 0 ? 90.75 : 0;
+    for (let x = base - HP; x < W + 90; x += HP)
+      u += `<use xlink:href='#s' x='${x}' y='${cy}'/>`;
+  }
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='${W}' height='${H}' viewBox='0 0 ${W} ${H}'><rect width='${W}' height='${H}' fill='${BG}'/><defs><g id='s' fill='${BG}' stroke='${LN}' stroke-width='7.5'><circle r='81.25'/><circle r='57.75'/><circle r='35.25'/></g></defs>${u}</svg>`;
+  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+}
+
 const ASSETS = {
   // UI และพื้นหลัง
   logo: "Asset/Malatang_Logo.png",
   bgTile:
-    "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='363' height='443' viewBox='0 0 363 443'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.06' stroke-width='4'%3E%3Ccircle cx='0' cy='0' r='165'/%3E%3Ccircle cx='0' cy='0' r='132'/%3E%3Ccircle cx='0' cy='0' r='99'/%3E%3Ccircle cx='0' cy='0' r='66'/%3E%3Ccircle cx='0' cy='0' r='33'/%3E%3Ccircle cx='363' cy='0' r='165'/%3E%3Ccircle cx='363' cy='0' r='132'/%3E%3Ccircle cx='363' cy='0' r='99'/%3E%3Ccircle cx='363' cy='0' r='66'/%3E%3Ccircle cx='363' cy='0' r='33'/%3E%3Ccircle cx='181.5' cy='221.5' r='165'/%3E%3Ccircle cx='181.5' cy='221.5' r='132'/%3E%3Ccircle cx='181.5' cy='221.5' r='99'/%3E%3Ccircle cx='181.5' cy='221.5' r='66'/%3E%3Ccircle cx='181.5' cy='221.5' r='33'/%3E%3Ccircle cx='0' cy='443' r='165'/%3E%3Ccircle cx='0' cy='443' r='132'/%3E%3Ccircle cx='0' cy='443' r='99'/%3E%3Ccircle cx='0' cy='443' r='66'/%3E%3Ccircle cx='0' cy='443' r='33'/%3E%3Ccircle cx='363' cy='443' r='165'/%3E%3Ccircle cx='363' cy='443' r='132'/%3E%3Ccircle cx='363' cy='443' r='99'/%3E%3Ccircle cx='363' cy='443' r='66'/%3E%3Ccircle cx='363' cy='443' r='33'/%3E%3C/g%3E%3C/svg%3E",
+    "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='363' height='443' viewBox='0 0 363 443'%3E%3Crect width='363' height='443' fill='%234A0E0E'/%3E%3Cdefs%3E%3Cg id='s' fill='%234A0E0E' stroke='%23580E0D' stroke-width='7.5'%3E%3Ccircle r='81.25'/%3E%3Ccircle r='57.75'/%3E%3Ccircle r='35.25'/%3E%3C/g%3E%3C/defs%3E%3Cuse xlink:href='%23s' x='0' y='-40.625'/%3E%3Cuse xlink:href='%23s' x='181.5' y='-40.625'/%3E%3Cuse xlink:href='%23s' x='363' y='-40.625'/%3E%3Cuse xlink:href='%23s' x='-90.75' y='14.75'/%3E%3Cuse xlink:href='%23s' x='90.75' y='14.75'/%3E%3Cuse xlink:href='%23s' x='272.25' y='14.75'/%3E%3Cuse xlink:href='%23s' x='453.75' y='14.75'/%3E%3Cuse xlink:href='%23s' x='0' y='70.125'/%3E%3Cuse xlink:href='%23s' x='181.5' y='70.125'/%3E%3Cuse xlink:href='%23s' x='363' y='70.125'/%3E%3Cuse xlink:href='%23s' x='-90.75' y='125.5'/%3E%3Cuse xlink:href='%23s' x='90.75' y='125.5'/%3E%3Cuse xlink:href='%23s' x='272.25' y='125.5'/%3E%3Cuse xlink:href='%23s' x='453.75' y='125.5'/%3E%3Cuse xlink:href='%23s' x='0' y='180.875'/%3E%3Cuse xlink:href='%23s' x='181.5' y='180.875'/%3E%3Cuse xlink:href='%23s' x='363' y='180.875'/%3E%3Cuse xlink:href='%23s' x='-90.75' y='236.25'/%3E%3Cuse xlink:href='%23s' x='90.75' y='236.25'/%3E%3Cuse xlink:href='%23s' x='272.25' y='236.25'/%3E%3Cuse xlink:href='%23s' x='453.75' y='236.25'/%3E%3Cuse xlink:href='%23s' x='0' y='291.625'/%3E%3Cuse xlink:href='%23s' x='181.5' y='291.625'/%3E%3Cuse xlink:href='%23s' x='363' y='291.625'/%3E%3Cuse xlink:href='%23s' x='-90.75' y='347'/%3E%3Cuse xlink:href='%23s' x='90.75' y='347'/%3E%3Cuse xlink:href='%23s' x='272.25' y='347'/%3E%3Cuse xlink:href='%23s' x='453.75' y='347'/%3E%3Cuse xlink:href='%23s' x='0' y='402.375'/%3E%3Cuse xlink:href='%23s' x='181.5' y='402.375'/%3E%3Cuse xlink:href='%23s' x='363' y='402.375'/%3E%3Cuse xlink:href='%23s' x='-90.75' y='457.75'/%3E%3Cuse xlink:href='%23s' x='90.75' y='457.75'/%3E%3Cuse xlink:href='%23s' x='272.25' y='457.75'/%3E%3Cuse xlink:href='%23s' x='453.75' y='457.75'/%3E%3Cuse xlink:href='%23s' x='0' y='513.125'/%3E%3Cuse xlink:href='%23s' x='181.5' y='513.125'/%3E%3Cuse xlink:href='%23s' x='363' y='513.125'/%3E%3C/svg%3E",
   s1: "Asset/Step_1_icon.png",
   s2: "Asset/Step_2_icon.png",
   s3: "Asset/Step_3_icon.png",

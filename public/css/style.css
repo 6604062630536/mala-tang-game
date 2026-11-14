@@ -268,7 +268,7 @@ h2 {
 #soupLayer {
   position: absolute;
   left: 8.3%;
-  top: 13.6%;
+  top: 17%;
   width: 84%;
   height: 66.8%;
   border-radius: 50%;
@@ -474,7 +474,7 @@ h2 {
 }
 #bowlVeil {
   left: 8.3%;
-  top: 13.6%;
+  top: 17%;
   width: 84%;
   height: 66.8%;
 }
@@ -525,10 +525,10 @@ h2 {
 }
 #sauceMix {
   position: absolute;
-  left: 12%;
-  top: 15%;
-  width: 76%;
-  height: 54%;
+  left: 11%;
+  top: 19%;
+  width: 77%;
+  height: 55%;
   border-radius: 50%;
   overflow: hidden;
   opacity: 0;
@@ -1739,7 +1739,7 @@ h2.p2,
 .cb .sl {
   position: absolute;
   left: 8.3%;
-  top: 13.6%;
+  top: 17%;
   width: 84%;
   height: 66.8%;
   border-radius: 50%;
