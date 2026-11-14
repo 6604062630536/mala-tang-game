@@ -26,7 +26,7 @@ html,
 body {
   margin: 0;
   height: 100%;
-  overflow: hidden;
+  overflow-y: auto;
   background: var(--letterbox);
 }
 body.dragging,
@@ -64,11 +64,11 @@ body {
 }
 /* เวทีขนาดคงที่ 1920x1080 แล้วย่อ/ขยายให้พอดีหน้าจอด้วย JS */
 #stage {
-  position: absolute;
+  position: relative;
   left: 0;
   top: 0;
   width: 1920px;
-  height: 1080px;
+  aspect-ratio: 16/9;
   transform-origin: 0 0;
   background: var(--cream);
   overflow: hidden;
