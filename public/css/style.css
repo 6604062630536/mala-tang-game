@@ -65,14 +65,13 @@ body {
 /* เวทีขนาดคงที่ 1920x1080 แล้วย่อ/ขยายให้พอดีหน้าจอด้วย JS */
 #stage {
   position: relative;
-  left: 0;
-  top: 0;
-  width: 1920px;
-  aspect-ratio: 16/9;
+  width: 100%;
+  max-width: 1920px;
+  margin: 40px auto 0 auto;
+  aspect-ratio: 16 / 9;
   transform-origin: 0 0;
   background: var(--cream);
   overflow: hidden;
-  margin-top: 50px;
 }
 #top {
   position: absolute;
