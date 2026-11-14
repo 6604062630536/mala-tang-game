@@ -2223,6 +2223,28 @@ document.querySelectorAll("#spice .fl").forEach((b, i) =>
   }),
 );
 renderSpice();
+
+/* สีพื้นหลังรูปที่บันทึก ตามกลุ่ม MBTI · ink = สีตัวหนังสือที่วางบนพื้นตรงๆ */
+const GROUP_THEME = {
+  NT: { bg: "#712886", ln: "#945DA4", ink: "#FFFFFF" },
+  NF: { bg: "#9CC242", ln: "#B4D171", ink: "#2A1A14" },
+  SJ: { bg: "#30729C", ln: "#6395B4", ink: "#FFFFFF" },
+  SP: { bg: "#F5C465", ln: "#F7D38B", ink: "#2A1A14" },
+};
+const DEFAULT_THEME = { bg: "#4A0E0E", ln: "#580E0D", ink: "#FFFFFF" }; // แดง = ค่าเริ่มต้น
+function themeOf(type) {
+  if (!type || type.length !== 4) return DEFAULT_THEME;
+  const g =
+    type[1] === "N"
+      ? type[2] === "T"
+        ? "NT"
+        : "NF"
+      : type[3] === "J"
+        ? "SJ"
+        : "SP";
+  return GROUP_THEME[g] || DEFAULT_THEME;
+}
+
 /* ---------- บันทึกภาพผลลัพธ์แนวตั้ง 1080x1920 (IG Story) — วาดลง canvas เองทั้งหมด ไม่ต้องโหลดไลบรารีเพิ่ม ---------- */
 document.getElementById("bSave").addEventListener("click", async () => {
   const btn = document.getElementById("bSave");
@@ -2283,31 +2305,14 @@ document.getElementById("bSave").addEventListener("click", async () => {
       return lines;
     };
 
-    // 2. พื้นหลังสีแดงเข้ม (#4A0E0E) + ลายคลื่นญี่ปุ่น (Seigaiha) แบบในเกม
-    ctx.fillStyle = "#4A0E0E";
+    // 2. พื้นหลัง: สีและลายตามกลุ่ม MBTI (ไม่รู้กลุ่ม = แดงเหมือนเดิม)
+    const theme = themeOf(document.getElementById("play").dataset.mbti);
+    ctx.fillStyle = theme.bg;
     ctx.fillRect(0, 0, W, H);
-
-    // สร้างแพทเทิร์นลายคลื่นแบบเดียวกับ CSS --tile
-    const pCv = document.createElement("canvas");
-    pCv.width = 180;
-    pCv.height = 180;
-    const pCtx = pCv.getContext("2d");
-    pCtx.strokeStyle = "rgba(255, 255, 255, 0.045)";
-    pCtx.lineWidth = 3;
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 3; col++) {
-        const cx = col * 90 + (row % 2 ? 45 : 0);
-        const cy = row * 45 + 45;
-        [44, 32, 20, 9].forEach((r) => {
-          pCtx.beginPath();
-          pCtx.arc(cx, cy, r, Math.PI, 0);
-          pCtx.stroke();
-        });
-      }
-    }
-    const pat = ctx.createPattern(pCv, "repeat");
-    ctx.fillStyle = pat;
-    ctx.fillRect(0, 0, W, H);
+    const bgImg = await loadImg(
+      buildBgTile(W, H, theme.bg, theme.ln, 79.25, 91.5),
+    );
+    if (bgImg) ctx.drawImage(bgImg, 0, 0, W, H);
 
     // 3. แสงรอบชามเหมือนในเกม: แสงฟุ้ง + ลำแสง (+ ลำแสงสายรุ้งตอน Epic/Legendary) + ประกายดาว/ฝุ่นแสง
     //    สีและความแรงอ่านจากตัวแปรของเกม (--rc, --gi, --ri) และประกายอ่านจาก #sparks ที่เกมสุ่มไว้
@@ -2601,6 +2606,88 @@ document.getElementById("bSave").addEventListener("click", async () => {
 
     await drawFoodPieces(document.getElementById("foodLayer"), false);
 
+    // 7.4 ถ้วยซอสและซอสที่ผสมไว้
+    const sauceBowl = document.getElementById("sbowl");
+    const sauceX = bX + (sauceBowl.offsetLeft - bowlEl.offsetLeft) * SC;
+    const sauceY = bY + (sauceBowl.offsetTop - bowlEl.offsetTop) * SC;
+    const sauceW = sauceBowl.offsetWidth * SC;
+    const sauceH = sauceBowl.offsetHeight * SC;
+    const sauceBowlImg = await loadImg(document.getElementById("sbowlImg").src);
+    if (sauceBowlImg) {
+      ctx.save();
+      ctx.shadowColor = "rgba(0,0,0,0.5)";
+      ctx.shadowBlur = 10 * SC;
+      ctx.shadowOffsetY = 10 * SC;
+      ctx.drawImage(sauceBowlImg, sauceX, sauceY, sauceW, sauceH);
+      ctx.restore();
+    }
+
+    if (state.sauces.length) {
+      const mixX = sauceX + sauceW * 0.11;
+      const mixY = sauceY + sauceH * 0.19;
+      const mixW = sauceW * 0.77;
+      const mixH = sauceH * 0.55;
+      const avg = [0, 1, 2].map((i) =>
+        Math.round(
+          state.sauces.reduce(
+            (sum, sauce) =>
+              sum + SAUCES.find((item) => item.id === sauce.id).color[i],
+            0,
+          ) / state.sauces.length,
+        ),
+      );
+      const color = (values) => `rgb(${values.join(",")})`;
+      const gradientX = mixX + mixW * 0.4;
+      const gradientY = mixY + mixH * 0.35;
+      const gradient = ctx.createRadialGradient(
+        gradientX,
+        gradientY,
+        0,
+        gradientX,
+        gradientY,
+        Math.max(mixW, mixH),
+      );
+      gradient.addColorStop(
+        0,
+        color(avg.map((v) => Math.min(255, v + 22))),
+      );
+      gradient.addColorStop(0.6, color(avg));
+      gradient.addColorStop(
+        1,
+        color(avg.map((v) => Math.round(v * 0.78))),
+      );
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(
+        mixX + mixW / 2,
+        mixY + mixH / 2,
+        mixW / 2,
+        mixH / 2,
+        0,
+        0,
+        Math.PI * 2,
+      );
+      ctx.clip();
+      ctx.fillStyle = gradient;
+      ctx.fillRect(mixX, mixY, mixW, mixH);
+      state.sauces.flatMap((sauce) => sauce.dots).forEach((dot) => {
+        ctx.beginPath();
+        ctx.fillStyle = dot.c;
+        ctx.ellipse(
+          mixX + (mixW * dot.x) / 100 + (dot.s * SC) / 2,
+          mixY + (mixH * dot.y) / 100 + (dot.s * SC) / 2,
+          (dot.s * SC) / 2,
+          (dot.s * SC) / 2,
+          0,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+      });
+      ctx.restore();
+    }
+
     // 8. แถบ Hashtags 3 อันใต้ชาม (#สมดุล #เข้าใจผู้อื่น #อบอุ่น ฯลฯ)
     const tagEls = [...document.querySelectorAll("#rTags span")];
     const tags = tagEls.map((el) => el.textContent.trim().replace(/^#/, ""));
@@ -2743,7 +2830,7 @@ document.getElementById("bSave").addEventListener("click", async () => {
     // 11. โซนล่างขวา: คำอธิบายนิสัย (Personality) + โลโก้ Mala Tang + Created By Wrt
     const persText = document.getElementById("rPers").textContent.trim();
     ctx.font = '400 30px "Kanit", sans-serif';
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = theme.ink;
     ctx.textAlign = "left";
     const persLines = wrapThai(persText, 535);
     persLines.forEach((ln, idx) => {
@@ -2762,7 +2849,7 @@ document.getElementById("bSave").addEventListener("click", async () => {
 
     // เครดิต Created By Wrt
     ctx.font = '500 32px "Fredoka", sans-serif';
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = theme.ink;
     ctx.textAlign = "right";
     ctx.fillText("Created By Wrt", 965, 1835);
 

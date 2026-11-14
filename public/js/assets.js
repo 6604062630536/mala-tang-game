@@ -1,15 +1,19 @@
-function buildBgTile(W = 2283, H = 1600) {
-  const BG = "#4A0E0E",
-    LN = "#580E0D",
-    Y0 = 125.5,
-    P = 55.375,
+function buildBgTile(
+  W = 2283,
+  H = 1600,
+  BG = "#4A0E0E",
+  LN = "#580E0D",
+  Y0 = 125.5,
+  X0 = 90.75,
+) {
+  const P = 55.375,
     HP = 181.5;
   const r0 = Math.ceil((-90 - Y0) / P),
     r1 = Math.floor((H + 90 - Y0) / P);
   let u = "";
   for (let r = r0; r <= r1; r++) {
     const cy = Y0 + r * P,
-      base = ((r % 2) + 2) % 2 === 0 ? 90.75 : 0;
+      base = ((r % 2) + 2) % 2 === 0 ? X0 : X0 - 90.75;
     for (let x = base - HP; x < W + 90; x += HP)
       u += `<use xlink:href='#s' x='${x}' y='${cy}'/>`;
   }
