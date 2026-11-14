@@ -802,22 +802,9 @@ function fit() {
   stage.style.transform = `translate(${ox}px,${oy}px) scale(${scale})`;
 }
 addEventListener("resize", fit);
-addEventListener("orientationchange", () =>
-  setTimeout(() => {
-    fit();
-    sGo(sPage);
-  }, 250),
-); // iOS อัปเดตขนาดช้า
+addEventListener("orientationchange", () => setTimeout(fit, 250)); // iOS อัปเดตขนาดช้า
 if (window.visualViewport) visualViewport.addEventListener("resize", fit);
 fit();
-
-/* แจ้งให้หมุนมือถือเป็นแนวนอน */
-{
-  const r = document.createElement("div");
-  r.id = "rotate";
-  r.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg><div>กรุณาหมุนมือถือเป็นแนวนอน</div><small>เกมนี้เล่นได้เฉพาะแนวนอนเท่านั้น</small>`;
-  document.body.appendChild(r);
-}
 
 /* ใส่รูปหลัก */
 $("#play").style.setProperty("--tile", `url("${ASSETS.bgTile}")`);
@@ -836,12 +823,6 @@ function makeItem(d, kind) {
   el.className = "item";
   el.dataset.kind = kind;
   el.dataset.id = d.id;
-  el.dataset.slot =
-    kind === "soup"
-      ? SOUPS.indexOf(d)
-      : kind === "ing"
-        ? INGS.indexOf(d) % 4
-        : SAUCES.indexOf(d);
   if (kind === "ing") el.dataset.page = d.page;
   let html;
   if (kind === "soup") {
@@ -865,12 +846,7 @@ SAUCES.forEach((d) => makeItem(d, "sauce"));
 let sPage = 0;
 function sGo(p) {
   sPage = Math.max(0, Math.min(SPAGES - 1, p));
-  const viewWidth = matchMedia(
-    "(orientation: portrait) and (max-width: 900px)",
-  ).matches
-    ? 360
-    : SAUCE_VIEW_W;
-  $("#sauceTrack").style.transform = `translateX(${-sPage * viewWidth}px)`;
+  $("#sauceTrack").style.transform = `translateX(${-sPage * SAUCE_VIEW_W}px)`;
   $("#sPrev").disabled = sPage === 0;
   $("#sNext").disabled = sPage === SPAGES - 1;
 }
