@@ -2234,6 +2234,87 @@ function themeOf(type) {
         : "SP";
   return GROUP_THEME[g] || DEFAULT_THEME;
 }
+/* ---------- ส่งรูปออก: มือถือ = หน้าต่าง Share (บันทึกรูปภาพ) · คอม = ดาวน์โหลด ---------- */
+const isMobile = matchMedia("(pointer:coarse)").matches;
+function canShareFile(file) {
+  try {
+    return !!(
+      navigator.share &&
+      navigator.canShare &&
+      navigator.canShare({ files: [file] })
+    );
+  } catch (e) {
+    return false;
+  }
+}
+function shareFile(file) {
+  return navigator.share({ files: [file], title: "Mala Tang" });
+}
+function downloadBlob(blob, fname) {
+  const url = URL.createObjectURL(blob),
+    a = document.createElement("a");
+  a.href = url;
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
+/* หน้าต่างพรีวิว: ใช้เมื่อเด้ง Share อัตโนมัติไม่ได้ (iOS ปฏิเสธเพราะสิทธิ์จากการแตะหมดอายุ / เบราว์เซอร์ไม่รองรับ) */
+function showSaveSheet(blob, file, fname) {
+  document.getElementById("shareSheet")?.remove();
+  const url = URL.createObjectURL(blob),
+    el = document.createElement("div");
+  el.id = "shareSheet";
+  const canShare = canShareFile(file);
+  el.innerHTML = `<img src="${url}" alt="">
+    <div class="ss-side">
+      <div class="ss-hint">${canShare ? 'กด "แชร์ / บันทึกรูป" แล้วเลือก "บันทึกรูปภาพ"' : "กดรูปค้างไว้ แล้วเลือกบันทึกรูปภาพ"}</div>
+      ${canShare ? '<button class="ss-main">แชร์ / บันทึกรูป</button>' : ""}
+      <button class="ss-dl">ดาวน์โหลดไฟล์</button>
+      <button class="ss-x">ปิด</button>
+    </div>`;
+  const close = () => {
+    el.remove();
+    URL.revokeObjectURL(url);
+  };
+  el.querySelector(".ss-x").onclick = close;
+  el.querySelector(".ss-dl").onclick = () => downloadBlob(blob, fname);
+  const m = el.querySelector(".ss-main");
+  if (m)
+    m.onclick = async () => {
+      try {
+        await shareFile(file);
+      } catch (e) {
+        if (!e || e.name !== "AbortError")
+          toast("แชร์ไม่สำเร็จ ลองกดรูปค้างเพื่อบันทึก");
+      }
+    };
+  document.body.appendChild(el);
+}
+async function deliverImage(blob, fname) {
+  // บนหน้า Artifact ต้องบันทึกผ่านระบบของแพลตฟอร์ม
+  const dl = window.claude && claude.use ? await claude.use("downloads") : null;
+  if (dl) {
+    await dl.save({ filename: fname, data: blob });
+    return;
+  }
+
+  const file = new File([blob], fname, { type: "image/png" });
+  if (isMobile) {
+    if (canShareFile(file)) {
+      try {
+        await shareFile(file);
+        return;
+      } catch (err) {
+        if (err && err.name === "AbortError") return; // ผู้ใช้ปิดหน้าต่างแชร์เอง
+      }
+    }
+    showSaveSheet(blob, file, fname); // แชร์อัตโนมัติไม่ได้ → ให้กดปุ่ม/กดรูปค้างเอง
+    return;
+  }
+  downloadBlob(blob, fname); // คอม: ดาวน์โหลดเหมือนเดิม
+}
 
 /* ---------- บันทึกภาพผลลัพธ์แนวตั้ง 1080x1920 (IG Story) — วาดลง canvas เองทั้งหมด ไม่ต้องโหลดไลบรารีเพิ่ม ---------- */
 document.getElementById("bSave").addEventListener("click", async () => {
@@ -2637,15 +2718,9 @@ document.getElementById("bSave").addEventListener("click", async () => {
         gradientY,
         Math.max(mixW, mixH),
       );
-      gradient.addColorStop(
-        0,
-        color(avg.map((v) => Math.min(255, v + 22))),
-      );
+      gradient.addColorStop(0, color(avg.map((v) => Math.min(255, v + 22))));
       gradient.addColorStop(0.6, color(avg));
-      gradient.addColorStop(
-        1,
-        color(avg.map((v) => Math.round(v * 0.78))),
-      );
+      gradient.addColorStop(1, color(avg.map((v) => Math.round(v * 0.78))));
 
       ctx.save();
       ctx.beginPath();
@@ -2661,20 +2736,22 @@ document.getElementById("bSave").addEventListener("click", async () => {
       ctx.clip();
       ctx.fillStyle = gradient;
       ctx.fillRect(mixX, mixY, mixW, mixH);
-      state.sauces.flatMap((sauce) => sauce.dots).forEach((dot) => {
-        ctx.beginPath();
-        ctx.fillStyle = dot.c;
-        ctx.ellipse(
-          mixX + (mixW * dot.x) / 100 + (dot.s * SC) / 2,
-          mixY + (mixH * dot.y) / 100 + (dot.s * SC) / 2,
-          (dot.s * SC) / 2,
-          (dot.s * SC) / 2,
-          0,
-          0,
-          Math.PI * 2,
-        );
-        ctx.fill();
-      });
+      state.sauces
+        .flatMap((sauce) => sauce.dots)
+        .forEach((dot) => {
+          ctx.beginPath();
+          ctx.fillStyle = dot.c;
+          ctx.ellipse(
+            mixX + (mixW * dot.x) / 100 + (dot.s * SC) / 2,
+            mixY + (mixH * dot.y) / 100 + (dot.s * SC) / 2,
+            (dot.s * SC) / 2,
+            (dot.s * SC) / 2,
+            0,
+            0,
+            Math.PI * 2,
+          );
+          ctx.fill();
+        });
       ctx.restore();
     }
 
@@ -2843,20 +2920,12 @@ document.getElementById("bSave").addEventListener("click", async () => {
     ctx.textAlign = "right";
     ctx.fillText("Created By Wrt", 965, 1835);
 
-    // 12. ดาวน์โหลดเป็นไฟล์ PNG
+    // 12. ส่งรูปออก (มือถือ = Share · คอม = ดาวน์โหลด)
     const mbtiCode = document.getElementById("play").dataset.mbti || "MalaTang",
       fname = `MalaTang-${mbtiCode}-Story.png`;
-    const dl =
-      window.claude && claude.use ? await claude.use("downloads") : null; // บนหน้า Artifact ต้องบันทึกผ่านระบบของแพลตฟอร์ม
-    if (dl) {
-      const blob = await new Promise((r) => cv.toBlob(r, "image/png"));
-      await dl.save({ filename: fname, data: blob });
-    } else {
-      const link = document.createElement("a");
-      link.download = fname;
-      link.href = cv.toDataURL("image/png");
-      link.click();
-    }
+    const blob = await new Promise((r) => cv.toBlob(r, "image/png"));
+    if (!blob) throw new Error("สร้างไฟล์ภาพไม่สำเร็จ");
+    await deliverImage(blob, fname);
   } catch (err) {
     console.error(err);
     if (typeof toast === "function" && !(err && err.code === "declined"))

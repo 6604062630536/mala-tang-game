@@ -1976,3 +1976,61 @@ h2.p2,
     display: none !important;
   }
 }
+
+/* ---------- หน้าต่างพรีวิว/บันทึกรูป (มือถือ แนวนอน) ---------- */
+#shareSheet {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5vw;
+  padding: max(2vh, env(safe-area-inset-top))
+    max(4vw, env(safe-area-inset-right)) max(2vh, env(safe-area-inset-bottom))
+    max(4vw, env(safe-area-inset-left));
+  background: rgba(20, 5, 5, 0.92);
+  color: #fff;
+  font:
+    400 20px/1.4 "Kanit",
+    sans-serif;
+  touch-action: auto;
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+#shareSheet img {
+  max-height: 92vh;
+  max-width: 42vw;
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  -webkit-touch-callout: default; /* iOS: กดรูปค้างเพื่อบันทึกได้ */
+}
+#shareSheet .ss-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(300px, 40vw);
+}
+#shareSheet .ss-hint {
+  font-size: 17px;
+  opacity: 0.85;
+  text-align: center;
+}
+#shareSheet button {
+  height: 54px;
+  border-radius: 27px;
+  border: 3px solid #fff;
+  background: #fff;
+  color: var(--orange);
+  font:
+    500 21px/1 "Kanit",
+    sans-serif;
+  cursor: pointer;
+}
+#shareSheet button.ss-dl,
+#shareSheet button.ss-x {
+  background: transparent;
+  color: #fff;
+}
