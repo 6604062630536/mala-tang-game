@@ -1197,19 +1197,22 @@ function piecePos(d, pos) {
 function place(kind, d, pos, moved) {
   if (kind === "ing") {
     state.ings.push(piecePos(d, pos));
+    undoStack.push({ t: "ing" });
     sfx.ingredient();
-  } // ใส่ซ้ำได้
-  else if (kind === "soup") {
-    // เลือกซุปได้หลายชนิด: แตะซุปที่เลือกแล้วอีกครั้ง = เอาออก
+  } else if (kind === "soup") {
     const i = state.soups.indexOf(d.id);
     if (i < 0) {
       state.soups.push(d.id);
+      undoStack.push({ t: "soup", id: d.id, added: true });
       sfx.soup();
-    } else if (!moved) state.soups.splice(i, 1);
-    else return;
+    } else if (!moved) {
+      state.soups.splice(i, 1);
+      undoStack.push({ t: "soup", id: d.id, added: false });
+    } else return;
   } else {
     if (state.sauces.find((s) => s.id === d.id)) return;
     state.sauces.push({ id: d.id, dots: makeDots(d) });
+    undoStack.push({ t: "sauce", id: d.id });
     sfx.sauce();
   }
   render();
@@ -1346,6 +1349,8 @@ function render() {
   $("#st3").classList.toggle("on", view === "soup"); // 3 = น้ำซุป
   $("#bNext").disabled = !state.ings.length;
   $("#bOk").disabled = !state.soups.length || !state.ings.length;
+
+  if (typeof undoBtn !== "undefined") undoBtn.disabled = undoIndex() < 0;
   renderReceipt();
 }
 
@@ -1510,6 +1515,7 @@ function swapBowls(onMid) {
   }, 720);
 }
 function clearOrder() {
+  undoStack.length = 0;
   state.ings = [];
   state.soups = [];
   state.sauces = [];
@@ -1536,6 +1542,55 @@ function clearOrder() {
 $("#reset").addEventListener("click", () => {
   if (!busy) swapBowls(clearOrder);
 }); // Reset = ล้างออเดอร์ปัจจุบัน (เลขออเดอร์เดิม)
+
+/* ---------- ไอคอนถังขยะ + ปุ่มย้อนกลับ ---------- */
+const ICON = (p) =>
+  `<svg viewBox="0 0 24 24" fill="none" stroke="#CF4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+$("#reset").innerHTML = ICON(
+  '<path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/>',
+);
+$("#reset").title = "ล้างทั้งหมด";
+const undoBtn = document.createElement("button");
+undoBtn.id = "undo";
+undoBtn.title = "ย้อนกลับ";
+undoBtn.innerHTML = ICON(
+  '<path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
+);
+play.appendChild(undoBtn);
+
+/* ประวัติการกระทำ: หน้า main ย้อนได้เฉพาะ ing/sauce · หน้า soup ย้อนได้เฉพาะ soup/spice */
+const undoStack = [];
+const UNDO_KINDS = { main: ["ing", "sauce"], soup: ["soup", "spice"] };
+function undoIndex() {
+  const ks = UNDO_KINDS[play.dataset.view] || [];
+  for (let i = undoStack.length - 1; i >= 0; i--)
+    if (ks.includes(undoStack[i].t)) return i;
+  return -1;
+}
+function undo() {
+  if (busy) return;
+  const i = undoIndex();
+  if (i < 0) return;
+  const h = undoStack.splice(i, 1)[0];
+  if (h.t === "ing") {
+    state.ings.pop();
+    const last = $("#foodLayer").lastElementChild;
+    if (last) last.remove();
+    foodMade = state.ings.length;
+  } else if (h.t === "soup") {
+    if (h.added) state.soups = state.soups.filter((x) => x !== h.id);
+    else state.soups.push(h.id);
+  } else if (h.t === "sauce") {
+    state.sauces = state.sauces.filter((s) => s.id !== h.id);
+  } else if (h.t === "spice") {
+    state.spice = h.prev;
+    state.spiceSet = h.prevSet;
+    renderSpice();
+  }
+  sfx.ding();
+  render();
+}
+undoBtn.addEventListener("click", undo);
 
 function groups_for_order() {
   const m = {};
@@ -2144,6 +2199,7 @@ function renderSpice() {
 document.querySelectorAll("#spice .fl").forEach((b, i) =>
   b.addEventListener("click", () => {
     if (state.spiceSet && state.spice === i) return;
+    undoStack.push({ t: "spice", prev: state.spice, prevSet: state.spiceSet });
     state.spice = i;
     state.spiceSet = true;
     renderSpice();

@@ -1,7 +1,8 @@
 const ASSETS = {
   // UI และพื้นหลัง
   logo: "Asset/Malatang_Logo.png",
-  bgTile: "Asset/Mala_Tang_Background.png",
+  bgTile:
+    "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='363' height='443' viewBox='0 0 363 443'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.06' stroke-width='4'%3E%3Ccircle cx='0' cy='0' r='165'/%3E%3Ccircle cx='0' cy='0' r='132'/%3E%3Ccircle cx='0' cy='0' r='99'/%3E%3Ccircle cx='0' cy='0' r='66'/%3E%3Ccircle cx='0' cy='0' r='33'/%3E%3Ccircle cx='363' cy='0' r='165'/%3E%3Ccircle cx='363' cy='0' r='132'/%3E%3Ccircle cx='363' cy='0' r='99'/%3E%3Ccircle cx='363' cy='0' r='66'/%3E%3Ccircle cx='363' cy='0' r='33'/%3E%3Ccircle cx='181.5' cy='221.5' r='165'/%3E%3Ccircle cx='181.5' cy='221.5' r='132'/%3E%3Ccircle cx='181.5' cy='221.5' r='99'/%3E%3Ccircle cx='181.5' cy='221.5' r='66'/%3E%3Ccircle cx='181.5' cy='221.5' r='33'/%3E%3Ccircle cx='0' cy='443' r='165'/%3E%3Ccircle cx='0' cy='443' r='132'/%3E%3Ccircle cx='0' cy='443' r='99'/%3E%3Ccircle cx='0' cy='443' r='66'/%3E%3Ccircle cx='0' cy='443' r='33'/%3E%3Ccircle cx='363' cy='443' r='165'/%3E%3Ccircle cx='363' cy='443' r='132'/%3E%3Ccircle cx='363' cy='443' r='99'/%3E%3Ccircle cx='363' cy='443' r='66'/%3E%3Ccircle cx='363' cy='443' r='33'/%3E%3C/g%3E%3C/svg%3E",
   s1: "Asset/Step_1_icon.png",
   s2: "Asset/Step_2_icon.png",
   s3: "Asset/Step_3_icon.png",
