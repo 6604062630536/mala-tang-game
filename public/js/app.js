@@ -9,6 +9,10 @@
    ข้อมูลเมนู — ปรับตำแหน่ง/ชื่อ/สีได้ตรงนี้
    ============================================================ */
 // น้ำซุป (เลือกได้หลายชนิด — ในหม้อจะแบ่งเป็นช่องตามจำนวนซุปที่เลือก)
+
+if (matchMedia("(pointer:coarse)").matches)
+  document.documentElement.classList.add("lite");
+
 const SOUPS = [
   { id: "red", img: "soupRed", th: "ซุปหม่าล่า<br>แดงเสฉวน", x: 45, y: 197 },
   {
@@ -796,6 +800,18 @@ function fit() {
   const ox = (w - 1920 * scale) / 2,
     oy = (h - 1080 * scale) / 2;
   stage.style.transform = `translate(${ox}px,${oy}px) scale(${scale})`;
+}
+addEventListener("resize", fit);
+addEventListener("orientationchange", () => setTimeout(fit, 250)); // iOS อัปเดตขนาดช้า
+if (window.visualViewport) visualViewport.addEventListener("resize", fit);
+fit();
+
+/* หน้าจอ "กรุณาหมุนเป็นแนวนอน" */
+{
+  const r = document.createElement("div");
+  r.id = "rotate";
+  r.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg><div>กรุณาหมุนมือถือเป็นแนวนอน</div><small>เกมนี้เล่นได้เฉพาะแนวนอนเท่านั้น</small>`;
+  document.body.appendChild(r);
 }
 addEventListener("resize", fit);
 fit();
@@ -2857,6 +2873,12 @@ function miniBowl() {
       sfx.sauce();
     } catch (e) {}
     $("#start").classList.add("out");
+    try {
+      document.documentElement
+        .requestFullscreen?.()
+        .then(() => screen.orientation?.lock?.("landscape"))
+        .catch(() => {});
+    } catch (e) {}
     setTimeout(() => ($("#start").style.display = "none"), 650);
   });
 })();
