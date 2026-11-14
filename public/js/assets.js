@@ -81,7 +81,7 @@ const ASSETS = {
   beefRipe: "Asset/Sliced_beef_Single_Ripe.png",
 
   bellyTray: "Asset/Sliced_pork_belly_Tray.png",
-  bellyPiece: "Asset/Sliced_pokr_belly_Single.png", // *สะกด pokr ตามชื่อไฟล์จริงของคุณ
+  bellyPiece: "Asset/Sliced_pokr_belly_Single.png",
   bellyRipe: "Asset/Sliced_pokr_belly_Single_Ripe.png",
 
   collarTray: "Asset/Pork_collar_Tray.png",

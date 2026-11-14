@@ -1931,11 +1931,572 @@ h2.p2,
   filter: none;
 }
 
-/* ---------- บังคับแนวนอน ---------- */
+/* ---------- หน้าจอแนวตั้งบนมือถือ ---------- */
 html,
 body {
   overscroll-behavior: none;
 }
+@media (orientation: portrait) and (max-width: 900px) {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+  body {
+    touch-action: manipulation;
+  }
+  #stage {
+    display: block !important;
+    width: 430px;
+    height: 920px;
+  }
+  #top {
+    width: 430px;
+    height: 70px;
+  }
+  #logo,
+  .line {
+    display: none;
+  }
+  .step {
+    top: 5px;
+    width: 133px;
+    opacity: 0.45;
+  }
+  #st1 {
+    left: 0 !important;
+  }
+  #st2 {
+    left: 148px !important;
+  }
+  #st3 {
+    left: 296px !important;
+  }
+  .step img {
+    height: 30px;
+    margin-bottom: 2px;
+  }
+  .step span {
+    font-size: 11px;
+  }
+  #play {
+    top: 70px;
+    width: 430px;
+    height: 850px;
+  }
+  #foot {
+    display: none;
+  }
+  #mute {
+    left: 382px;
+    top: 58px;
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+  #play > h2 {
+    font-size: 25px;
+    line-height: 1;
+    letter-spacing: 0;
+    -webkit-text-stroke-width: 4px;
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+  }
+  #play > h2.p1:nth-of-type(3) {
+    left: 15px !important;
+    top: 7px !important;
+    width: 130px !important;
+  }
+  #play > h2.p1:nth-of-type(4) {
+    left: 10px !important;
+    top: 390px !important;
+    width: 410px !important;
+  }
+  #play > h2.p2:nth-of-type(1) {
+    left: 10px !important;
+    top: 5px !important;
+    width: 410px !important;
+    font-size: 24px;
+  }
+  #play > h2.p2:nth-of-type(2) {
+    left: 8px !important;
+    top: 43px !important;
+    width: 115px !important;
+    font-size: 18px;
+  }
+  #glow {
+    display: none;
+  }
+  #bowls {
+    width: 430px;
+    height: 830px;
+  }
+  #bowl {
+    left: 18px !important;
+    top: 165px !important;
+    width: 250px;
+    height: 193px;
+  }
+  #sbowl {
+    left: 282px !important;
+    top: 210px !important;
+    width: 92px;
+    height: 72px;
+  }
+  #sauceView {
+    left: 25px;
+    top: 42px;
+    width: 380px;
+    height: 105px;
+  }
+  #sauceTrack {
+    width: 720px;
+    height: 105px;
+  }
+  #sauceTrack .item[data-kind="sauce"] {
+    top: 0 !important;
+    width: 90px !important;
+    font-size: 13px;
+  }
+  #sauceTrack .item[data-kind="sauce"][data-slot="0"] {
+    left: 0 !important;
+  }
+  #sauceTrack .item[data-kind="sauce"][data-slot="1"] {
+    left: 90px !important;
+  }
+  #sauceTrack .item[data-kind="sauce"][data-slot="2"] {
+    left: 180px !important;
+  }
+  #sauceTrack .item[data-kind="sauce"][data-slot="3"] {
+    left: 270px !important;
+  }
+  #sauceTrack .item[data-kind="sauce"][data-slot="4"] {
+    left: 360px !important;
+  }
+  #sauceTrack .item[data-kind="sauce"][data-slot="5"] {
+    left: 450px !important;
+  }
+  #sauceTrack .item[data-kind="sauce"][data-slot="6"] {
+    left: 540px !important;
+  }
+  #sauceTrack .item[data-kind="sauce"][data-slot="7"] {
+    left: 630px !important;
+  }
+  #sauceTrack .item[data-kind="sauce"] img.ic {
+    width: 64px !important;
+    height: 64px !important;
+  }
+  #sauceTrack .item[data-kind="sauce"] > div:not(.plus) {
+    margin-top: 2px !important;
+    font-size: 12px !important;
+  }
+  #sPrev,
+  #sNext {
+    top: 74px;
+    width: 30px;
+    height: 30px;
+    font-size: 22px;
+    z-index: 2;
+  }
+  #sPrev {
+    left: 0 !important;
+  }
+  #sNext {
+    left: 400px !important;
+  }
+  #play .item[data-kind="ing"] {
+    width: 180px !important;
+    font-size: 14px;
+  }
+  #play .item[data-kind="ing"][data-slot="0"] {
+    left: 18px !important;
+    top: 430px !important;
+  }
+  #play .item[data-kind="ing"][data-slot="1"] {
+    left: 232px !important;
+    top: 430px !important;
+  }
+  #play .item[data-kind="ing"][data-slot="2"] {
+    left: 18px !important;
+    top: 565px !important;
+  }
+  #play .item[data-kind="ing"][data-slot="3"] {
+    left: 232px !important;
+    top: 565px !important;
+  }
+  #play .item[data-kind="ing"] img.ic {
+    width: 100px !important;
+    height: 100px !important;
+  }
+  #play .item[data-kind="ing"] .plus {
+    left: 132px !important;
+    top: 4px !important;
+    width: 32px;
+    height: 32px;
+    font-size: 24px;
+  }
+  #play .item[data-kind="ing"] .cnt {
+    left: 2px;
+    top: 2px;
+    min-width: 25px;
+    height: 25px;
+    font-size: 14px;
+  }
+  #play .item[data-kind="ing"] .tag {
+    margin-top: 0;
+    padding: 1px 5px;
+    font-size: 12px;
+  }
+  #play .item[data-kind="ing"] .en,
+  #play .item[data-kind="ing"] .gr {
+    margin-top: 2px;
+    font-size: 12px;
+  }
+  #pager {
+    left: 100px;
+    top: 710px;
+    width: 230px;
+    height: 36px;
+    gap: 8px;
+  }
+  #dots {
+    gap: 9px;
+  }
+  #dots i {
+    width: 10px;
+    height: 10px;
+  }
+  #pager button {
+    width: 30px;
+    height: 30px;
+    font-size: 22px;
+  }
+  #nav {
+    left: 250px;
+    top: 770px;
+    width: 165px;
+    gap: 8px;
+  }
+  #nav .nbtn {
+    width: 165px;
+    height: 48px;
+    border-radius: 24px;
+    font-size: 17px;
+  }
+  #reset {
+    left: 15px;
+    top: 770px;
+    width: 44px;
+    height: 44px;
+  }
+  #reset svg,
+  #undo svg {
+    width: 26px;
+    height: 26px;
+  }
+  #undo {
+    left: 72px;
+    top: 770px;
+    width: 44px;
+    height: 44px;
+  }
+  #play[data-view="main"] #receipt,
+  #play[data-view="soup"] #receipt {
+    display: none;
+  }
+  #play[data-view="soup"] #pot {
+    left: 64px;
+    top: 145px;
+    width: 302px;
+    height: 209px;
+  }
+  #play .item[data-kind="soup"] {
+    width: 190px !important;
+    font-size: 14px;
+  }
+  #play .item[data-kind="soup"][data-slot="0"] {
+    left: 12px !important;
+    top: 365px !important;
+  }
+  #play .item[data-kind="soup"][data-slot="1"] {
+    left: 222px !important;
+    top: 365px !important;
+  }
+  #play .item[data-kind="soup"][data-slot="2"] {
+    left: 12px !important;
+    top: 485px !important;
+  }
+  #play .item[data-kind="soup"][data-slot="3"] {
+    left: 222px !important;
+    top: 485px !important;
+  }
+  #play .item[data-kind="soup"][data-slot="4"] {
+    left: 12px !important;
+    top: 605px !important;
+  }
+  #play .item[data-kind="soup"] img.ic {
+    width: 78px !important;
+    height: 78px !important;
+  }
+  #play .item[data-kind="soup"] .plus {
+    left: 144px !important;
+    top: 2px !important;
+    width: 30px;
+    height: 30px;
+    font-size: 22px;
+  }
+  #play .item[data-kind="soup"] > div:not(.plus) {
+    margin-top: 3px !important;
+    font-size: 13px !important;
+  }
+  #spChili {
+    left: 8px;
+    top: 69px;
+    font-size: 27px;
+  }
+  #spLbl {
+    left: 50px;
+    top: 75px;
+    font-size: 13px;
+  }
+  #spLv {
+    left: 106px;
+    top: 72px;
+    font-size: 24px;
+  }
+  #spice .fl {
+    top: 67px;
+    width: 38px;
+    height: 42px;
+    font-size: 32px;
+  }
+  #spice .fl:nth-of-type(1) {
+    left: 205px !important;
+  }
+  #spice .fl:nth-of-type(2) {
+    left: 257px !important;
+  }
+  #spice .fl:nth-of-type(3) {
+    left: 309px !important;
+  }
+  #spice .fl:nth-of-type(4) {
+    left: 361px !important;
+  }
+  #play[data-view="soup"] #nav {
+    left: 58px;
+    top: 770px;
+    width: 355px;
+    flex-direction: row;
+    gap: 8px;
+  }
+  #play[data-view="soup"] #nav .nbtn {
+    width: 174px;
+  }
+  #play[data-view="soup"] #reset {
+    left: 8px;
+    top: 774px;
+  }
+  #play[data-view="soup"] #undo {
+    display: none !important;
+  }
+  #play[data-view="soup"] #boilBar {
+    left: 20px;
+    top: 390px;
+    width: 390px;
+  }
+  #play[data-view="result"] #bowl {
+    left: 34px !important;
+    top: 205px !important;
+    width: 250px;
+    height: 193px;
+  }
+  #stage[data-view="result"] #top {
+    background: var(--maroon);
+  }
+  #play[data-view="result"] #sbowl {
+    left: 292px !important;
+    top: 213px !important;
+    width: 82px;
+    height: 64px;
+  }
+  #play[data-view="result"] #rHead {
+    left: 215px;
+    top: 8px;
+    width: 410px;
+    font-size: 24px;
+    -webkit-text-stroke-width: 4px;
+  }
+  #play[data-view="result"] #rTitle {
+    left: 215px;
+    top: 82px;
+    max-width: 390px;
+    padding: 0 12px;
+    font-size: 25px;
+    line-height: 44px;
+    -webkit-text-stroke-width: 0;
+  }
+  #play[data-view="result"] #rEn {
+    left: 215px;
+    top: 145px;
+    font-size: 23px;
+    -webkit-text-stroke-width: 4px;
+  }
+  #play[data-view="result"] #rTags {
+    left: 8px;
+    top: 410px;
+    width: 414px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  #play[data-view="result"] #rTags span {
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+  #play[data-view="result"] #rBowlDesc {
+    left: 16px;
+    top: 465px;
+    width: 398px;
+    height: 78px;
+    padding: 8px 14px;
+    border-radius: 22px;
+    font-size: 14px !important;
+    line-height: 1.3;
+  }
+  #play[data-view="result"] #receipt {
+    left: 14px;
+    top: 555px;
+    width: 190px;
+    height: 185px;
+    transform: none !important;
+    padding: 0;
+  }
+  #play[data-view="result"] .rc-head {
+    height: 52px;
+    padding-top: 2px;
+    font-size: 10px;
+  }
+  #play[data-view="result"] .rc-head img {
+    width: 42px;
+    margin-bottom: 1px;
+  }
+  #play[data-view="result"] #rcRows {
+    min-height: 0;
+  }
+  #play[data-view="result"] .rr {
+    min-height: 18px;
+    height: auto;
+    padding: 0 6px;
+    font-size: 11px;
+  }
+  #play[data-view="result"] .rr .th {
+    font-size: 11px;
+  }
+  #play[data-view="result"] #rcSauce,
+  #play[data-view="result"] #rcSoup {
+    height: 25px;
+  }
+  #play[data-view="result"] #rcSauce img,
+  #play[data-view="result"] #rcSoup img {
+    height: 22px !important;
+  }
+  #play[data-view="result"] .rc-total {
+    height: 24px;
+    padding: 0 6px;
+    font-size: 9px;
+  }
+  #play[data-view="result"] #stamp {
+    font-size: 15px;
+    border-width: 3px;
+  }
+  #play[data-view="result"] #rPers {
+    left: 216px;
+    top: 555px;
+    width: 198px;
+    height: 185px;
+    overflow-y: auto;
+    touch-action: pan-y;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  #play[data-view="result"] #nav {
+    left: 12px;
+    top: 765px;
+    width: 406px;
+    flex-direction: row;
+    gap: 8px;
+  }
+  #play[data-view="result"] #nav .nbtn {
+    width: 199px;
+    height: 48px;
+    font-size: 15px;
+  }
+  #toast {
+    top: 6px;
+    max-width: 390px;
+    padding: 7px 12px;
+    font-size: 14px;
+    z-index: 70;
+  }
+  #start #stLogo {
+    left: 95px;
+    top: 100px;
+    width: 240px;
+  }
+  #start #stTag {
+    left: 215px;
+    top: 285px;
+    font-size: 28px;
+    -webkit-text-stroke-width: 6px;
+  }
+  #start #stGo {
+    left: 55px;
+    top: 390px;
+    width: 320px;
+    height: 62px;
+    font-size: 21px;
+  }
+  #start #stBowls {
+    top: 475px;
+    width: 430px;
+    height: 280px;
+  }
+  #start #stTrack {
+    padding-left: 35px;
+    animation-name: stScrollMobile;
+  }
+  #start .cb {
+    flex-basis: 300px;
+    height: 280px;
+  }
+  #start .cbi {
+    left: 20px;
+    top: 22px;
+    width: 360px;
+    height: 277px;
+    transform: scale(0.7);
+  }
+  #start #stCount {
+    left: 20px;
+    top: 770px;
+    width: 390px;
+    font-size: 14px;
+  }
+  #start #stCount b {
+    font-size: 17px;
+  }
+  #start #stFoot {
+    left: 20px;
+    top: 835px;
+    width: 390px;
+    font-size: 12px;
+  }
+  @keyframes stScrollMobile {
+    to {
+      transform: translateX(-1500px);
+    }
+  }
+}
+
+/* ---------- บังคับหมุนมือถือเป็นแนวนอน ---------- */
 #rotate {
   display: none;
   position: fixed;
@@ -1972,11 +2533,11 @@ body {
     transform: rotate(-90deg);
   }
 }
-@media (orientation: portrait) and (pointer: coarse) {
+@media (orientation: portrait) and (max-width: 900px) {
   #rotate {
     display: flex;
   }
   #stage {
-    display: none;
-  } /* ซ่อนเกมตอนแนวตั้ง ช่วยประหยัดแรมด้วย */
+    display: none !important;
+  }
 }
