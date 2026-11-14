@@ -1976,6 +1976,21 @@ h2.p2,
     display: none !important;
   }
 }
+@media (orientation: landscape) and (max-width: 900px) {
+  html {
+    overflow-x: hidden;
+  }
+  body {
+    overflow: visible;
+    touch-action: pan-y;
+  }
+  #stage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+  }
+}
 
 /* ---------- หน้าต่างพรีวิว/บันทึกรูป (มือถือ แนวนอน) ---------- */
 #shareSheet {

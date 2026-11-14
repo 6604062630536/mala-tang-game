@@ -797,15 +797,26 @@ function fit() {
   const stage = document.getElementById("stage");
   if (!stage) return;
 
-  // คำนวณสเกลตามความกว้างจริงของหน้าจอ
+  const mobileLandscape = matchMedia(
+    "(orientation: landscape) and (max-width: 900px)",
+  ).matches;
   const containerW = stage.parentElement.clientWidth || window.innerWidth;
-  scale = containerW / 1920;
+  const viewportH = window.visualViewport?.height || window.innerHeight;
+  const widthScale = containerW / 1920;
+  scale = mobileLandscape
+    ? Math.min(widthScale, viewportH / 1080)
+    : widthScale;
 
-  // ปรับความสูงของ stage ให้สอดคล้องกับสเกล (1080 * scale)
   stage.style.width = "1920px";
   stage.style.height = "1080px";
-  stage.style.transform = `scale(${scale})`;
-  stage.parentElement.style.height = 1080 * scale + "px";
+  stage.style.transform = mobileLandscape
+    ? `translate(${(containerW - 1920 * scale) / 2}px, ${
+        (viewportH - 1080 * scale) / 2
+      }px) scale(${scale})`
+    : `scale(${scale})`;
+  stage.parentElement.style.height = mobileLandscape
+    ? `${viewportH + 120}px`
+    : `${1080 * scale}px`;
 }
 addEventListener("resize", fit);
 addEventListener("orientationchange", () => setTimeout(fit, 250)); // iOS อัปเดตขนาดช้า
