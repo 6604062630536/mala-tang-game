@@ -794,12 +794,18 @@ let scale = 1;
 
 /* ปรับเวทีให้พอดีหน้าจอ */
 function fit() {
-  const w = innerWidth,
-    h = innerHeight;
-  scale = Math.min(w / 1920, h / 1080);
-  const ox = (w - 1920 * scale) / 2,
-    oy = (h - 1080 * scale) / 2;
-  stage.style.transform = `translate(${ox}px,${oy}px) scale(${scale})`;
+  const stage = document.getElementById("stage");
+  if (!stage) return;
+
+  // คำนวณสเกลตามความกว้างจริงของหน้าจอ
+  const containerW = stage.parentElement.clientWidth || window.innerWidth;
+  scale = containerW / 1920;
+
+  // ปรับความสูงของ stage ให้สอดคล้องกับสเกล (1080 * scale)
+  stage.style.width = "1920px";
+  stage.style.height = "1080px";
+  stage.style.transform = `scale(${scale})`;
+  stage.parentElement.style.height = 1080 * scale + "px";
 }
 addEventListener("resize", fit);
 addEventListener("orientationchange", () => setTimeout(fit, 250)); // iOS อัปเดตขนาดช้า
